@@ -1713,6 +1713,6 @@ html {
 }
 @media (max-width: 768px) {
     body.bg-ranking main.page-container {
-        padding-top: calc(95px + env(safe-area-inset-top));
+        padding-top: calc(30px + env(safe-area-inset-top));
     }
 }
