@@ -1709,3 +1709,8 @@ html {
         background-color: var(--marron-oscuro);
     }
 }
+@media (max-width: 768px) {
+    body.pagina-inicio main.page-container {
+        padding-top: calc(95px + env(safe-area-inset-top));
+    }
+}
