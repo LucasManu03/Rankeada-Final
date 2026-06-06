@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Ranking - La Gran Rankeada</title>
+    <link rel="icon" type="image/png" href="fotos/logo-rankeada.png">
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="fotos/logo-rankeada.png">
+</head>
+<body class="bg-ranking">
+    <nav class="top-nav">
+        <a href="index.html" class="logo-container">
+            <img src="fotos/logo-rankeada.png" alt="Logo">
+            <span id="user-greeting" class="user-greeting" style="display: none;"></span>
+        </a>
+        <div class="hamburger-container">
+            <div class="hamburger-btn" id="hamburger-btn" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="index.html" class="menu-item">INICIO</a>
+                <a href="votar.html" class="menu-item">VOTAR</a>
+                <a href="ranking.html" class="menu-item">RANKING</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-container">
+        <header class="ranking-header">
+            <h1>EL PODIO</h1>
+            <p>Filtrar por categoría:</p>
+            
+            <div class="retro-dropdown-container">
+                <div class="retro-dropdown-btn" id="dropdown-btn-text" onclick="toggleRetroDropdown()">
+                    🏆 General (Overall) <span>▼</span>
+                </div>
+                <div class="retro-dropdown-list" id="retro-dropdown-list">
+                    <div class="retro-option" onclick="seleccionarFiltro('General', '🏆 General (Overall)')"> General (Overall)</div>
+                    <div class="retro-option" onclick="seleccionarFiltro('Carne', '🥩 Mejor Carne')"> Mejor Carne</div>
+                    <div class="retro-option" onclick="seleccionarFiltro('Pan', '🍞 Mejor Pan')"> Mejor Pan</div>
+                    <div class="retro-option" onclick="seleccionarFiltro('Papas Fritas / Guarnición', ' Mejores Papas')"> Mejores Papas</div>
+                    <div class="retro-option" onclick="seleccionarFiltro('Tamaño', '🍔 Mejor Tamaño')"> Mejor Tamaño</div>
+                    <div class="retro-option" onclick="seleccionarFiltro('Lugar y Ambiente', '🛋️ Mejor Ambiente')"> Mejor Ambiente</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="podium-container" id="podio-vacio">
+            </section>
+
+        <section class="ranking-list" id="lista-resto">
+            </section>
+    </main>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

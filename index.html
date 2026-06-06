@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>La Gran Rankeada</title>
+    <link rel="icon" type="image/png" href="fotos/logo-rankeada.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="fotos/logo-rankeada.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="index.html" class="logo-container" style="display: flex; align-items: center; text-decoration: none;">
+            <img src="fotos/logo-rankeada.png" alt="Logo La Gran Rankeada">
+            <span id="user-greeting" class="user-greeting" style="display: none;"></span>
+        </a>
+    </nav>
+    
+    <main class="page-container">
+
+        <section id="vista-login" class="login-section">
+            <h2>¡ACCESO<br>VIP!</h2>
+            <p>Ingresá tu PIN secreto para entrar.</p>
+            
+            <div class="login-box">
+                <input type="password" id="pin-input" placeholder="****" maxlength="4" inputmode="numeric">
+                <button class="btn-main btn-votar" onclick="intentarLogin()">
+                    <span>ENTRAR</span>
+                </button>
+            </div>
+            <p id="login-error" style="color: #FA4D56; font-weight: bold; margin-top: 10px; display: none;">Código incorrecto, mostro.</p>
+        </section>
+
+        <div id="vista-principal" style="display: none;">
+            
+            <header class="hero-wrapper">
+                <div class="texto-muro texto-solido">
+                    <span>LA GRAN</span>
+                    <span>RANKEADA</span>
+                </div>
+                
+                <img src="fotos/burger-nueva.png" alt="Hamburguesa Imponente" class="burger-muralla">
+
+                <div class="texto-muro texto-contorno">
+                    <span>LA GRAN</span>
+                    <span>RANKEADA</span>
+                </div>
+
+                <img src="fotos/burger-frente.png" alt="Detalle 3D" class="burger-frente">
+            </header>
+
+            <section class="landing-actions">
+                <div class="action-buttons">
+                    <a href="votar.html" class="btn-main btn-votar" onclick="sonarBotones()">
+                        <img src="fotos/mascota-votar.png" alt="Gordito Votando" class="mascota-flotante">
+                        <span>IR A VOTAR</span>
+                    </a>
+                    
+                    <a href="ranking.html" class="btn-main btn-ranking" onclick="sonarBotones()">
+                        <img src="fotos/mascota-ranking.png" alt="Gordito Ranking" class="mascota-flotante">
+                        <span>VER RANKING</span>
+                    </a>
+                </div>
+            </section>
+
+        </div> 
+    </main>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

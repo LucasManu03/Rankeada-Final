@@ -1,0 +1,1696 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Titan+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@700;900&family=Titan+One&display=swap');
+:root {
+    --bg-crema: #FDF3E3; 
+    --marron-oscuro: #4A1A04;
+    --mostaza: #F4A900;
+    --blanco: #FFFFFF;
+    --texto-secundario: #8B4513;
+    --border-radius: 20px; /* Agregado para las nuevas tarjetas retro */
+}
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Nunito', sans-serif; 
+}
+
+body {
+    background-color: transparent; /* QUITAMOS EL FONDO SÓLIDO */
+    color: var(--marron-oscuro);
+    padding: 20px;
+    padding-top: calc(20px + env(safe-area-inset-top));
+    padding-bottom: calc(100px + env(safe-area-inset-bottom));
+    overflow-x: hidden;
+}
+
+/* =========================================
+   1. BARRA DE NAVEGACIÓN (TRANSPARENTE + SMART SCROLL)
+   ========================================= */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: transparent; /* TRANSPARENTE AL INICIO */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+/* --- LOGO Y SALUDO (DESAPARECEN AL HACER SCROLL) --- */
+.logo-container, .user-greeting {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* --- CUANDO SE HACE SCROLL: EL LOGO SE VA --- */
+.top-nav.scrolled .logo-container,
+.top-nav.scrolled .user-greeting {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+}
+
+/* Aseguramos que el menú SIEMPRE esté a la derecha */
+.hamburger-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto; /* Fuerza el menú a la derecha */
+}
+
+/* =========================================
+   MENÚ HAMBURGUESA Y DESPLEGABLE
+   ========================================= */
+.hamburger-container {
+    position: relative;
+}
+
+.hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 35px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.hamburger-btn span {
+    display: block;
+    height: 4px;
+    width: 100%;
+    background-color: var(--marron-oscuro);
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+    transform-origin: left center;
+}
+
+/* Animación para transformarse en "X" */
+.hamburger-btn.active span:nth-child(1) {
+    transform: rotate(45deg) translate(0px, -2px);
+}
+
+.hamburger-btn.active span:nth-child(2) {
+    opacity: 0; /* Desaparece la raya del medio */
+    transform: translateX(15px);
+}
+
+.hamburger-btn.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(0px, 2px);
+}
+
+/* El menú desplegable flotante */
+.dropdown-menu {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: var(--mostaza);
+    border: 3px solid var(--marron-oscuro);
+    border-radius: 16px;
+    box-shadow: 4px 4px 0px var(--marron-oscuro);
+    padding: 15px 0;
+    min-width: 180px;
+    
+    /* Estado inicial: oculto, más chico y corrido para arriba */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px) scale(0.95);
+    /* El cubic-bezier es lo que le da ese efecto "rebote" (spring) */
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+    z-index: 99;
+}
+
+/* Cuando se abre el menú */
+.dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1); /* Vuelve a su tamaño y posición normal */
+}
+
+/* Las opciones del menú */
+.menu-item {
+    display: block;
+    padding: 15px 20px; /* Le di un pelín más de aire arriba y abajo */
+    color: var(--marron-oscuro);
+    text-decoration: none;
+    
+    /* ACÁ ESTÁ LA MAGIA DEL CENTRADO */
+    text-align: center; 
+    
+    font-family: 'Titan One', cursive !important; /* Viendo tu foto, esa fuente queda genial */
+    font-size: 18px;
+    transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.3); /* Un fondito blanco semi-transparente */
+    /* En vez de empujarlo a un costado, separamos un poco las letras desde el centro */
+    letter-spacing: 2px; 
+}
+
+.active-pill {
+    background: var(--marron-oscuro);
+    color: var(--bg-crema);
+}
+/* EL NUEVO LOGO */
+.logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-container img {
+    height: 60px; /* Ajustá esto según qué tan grande quieras el logo */
+    width: auto;
+    filter: drop-shadow(2px 4px 0px rgba(74, 26, 4, 0.2)); /* Le da un efecto sticker muy bueno */
+    transition: transform 0.2s ease;
+}
+
+.logo-container img:hover {
+    transform: scale(1.1) rotate(-5deg); /* Efecto divertido cuando le pasás el mouse */
+}
+/* =========================================
+   2. LA MURALLA 3D (Hero Section Home) 
+   ========================================= */
+.hero-wrapper {
+    position: relative; 
+    width: 100%;
+    height: auto;
+    min-height: 45vh; 
+    /* ACÁ ESTÁ EL ARREGLO: Antes estaba en 120px o más, lo bajamos a 60px */
+    margin-top: 60px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 60px; 
+    overflow: visible; 
+}
+
+/* Estilo base para ambos bloques de texto (Muro) */
+.texto-muro {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    pointer-events: none; /* Las letras no bloquean los clics de la hamburguesa */
+}
+
+.texto-muro span {
+    font-family: 'Titan One', cursive;
+    line-height: 0.85; /* Mantiene las dos palabras pegadas verticalmente */
+    margin: 0;
+}
+
+/* Tamaño específico para la primera línea: "LA GRAN" */
+.texto-muro span:nth-child(1) {
+    font-size: clamp(80px, 22vw, 300px); 
+    letter-spacing: -2px;
+}
+
+/* Tu ajuste: Tamaño específico y más reducido para "RANKEADA" */
+.texto-muro span:nth-child(2) {
+    font-size: clamp(70px, 22vw, 280px); 
+    letter-spacing: 0px; 
+}
+
+/* --- CAPA 1: Texto Sólido al FONDO --- */
+.texto-solido {
+    z-index: 1; 
+}
+.texto-solido span {
+    color: var(--marron-oscuro); 
+}
+
+/* --- CAPA 2: La hamburguesa imponente (MEDIO) --- */
+.burger-muralla {
+    position: relative;
+    z-index: 2; 
+    width: 100%; 
+    max-width: 580px; 
+    margin-top: -3%; 
+    filter: drop-shadow(0px 30px 20px rgba(74, 26, 4, 0.4));
+}
+
+/* --- CAPA 3: Texto de Contorno al FRENTE --- */
+.texto-contorno {
+    z-index: 3;
+    color: transparent; 
+}
+.texto-contorno span {
+    color: transparent; 
+    -webkit-text-stroke: 3px var(--bg-crema); 
+}
+
+/* --- CAPA 4: La lechuga/queso recortado al FRENTE ABSOLUTO --- */
+.burger-frente {
+    position: absolute;
+    z-index: 4; 
+    width: 100%; 
+    max-width: 580px; 
+    margin-top: -3%;  
+    pointer-events: none; 
+}
+
+/* =========================================
+   3. BOTONES PRINCIPALES (Pantalla de Inicio) 
+   ========================================= */
+.landing-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    z-index: 10;
+    position: relative;
+}
+
+.action-buttons {
+    display: flex;
+    /* ACÁ ESTÁ LA MAGIA: Pasamos de 15px a 45px para separar los botones */
+    gap: 45px; 
+    width: 100%;
+    /* Le damos apenitas más de ancho máximo al contenedor para que entren cómodos con el nuevo hueco */
+    max-width: 620px; 
+    z-index: 1; 
+}
+.btn-main {
+    position: relative; 
+    flex: 1; 
+    text-align: center;
+    text-decoration: none; 
+    padding: 20px 10px;
+    border-radius: 20px;
+    border: 3px solid var(--marron-oscuro);
+    box-shadow: 4px 4px 0px var(--marron-oscuro); 
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* FIX DEL GLITCH: Forzamos la capa 3D desde el inicio 
+       para que el Gordito no parpadee hacia adelante */
+    transform: scale(1); 
+    z-index: 1; 
+}
+
+.btn-main span {
+    position: relative;
+    z-index: 2; /* Texto siempre al frente */
+    font-family: 'Titan One', cursive !important; 
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+/* --- ANIMACIÓN DEL BOTÓN --- */
+.btn-main:hover {
+    animation: pulsarBoton 0.3s ease-out;
+}
+
+.btn-main:active {
+    transform: translate(3px, 3px) scale(1);
+    box-shadow: 1px 1px 0px var(--marron-oscuro);
+    animation: none; /* Evita que pulse raro si le hacés clic rápido */
+}
+
+.btn-votar {
+    background-color: var(--mostaza);
+    color: var(--marron-oscuro);
+}
+
+.btn-ranking {
+    background-color: var(--blanco);
+    color: var(--marron-oscuro);
+}
+
+/* --- MAGIA CORREGIDA: EL GORDITO MÁS ASOMADO Y SIEMPRE ATRÁS --- */
+.mascota-flotante {
+    position: absolute;
+    top: 15px; 
+    right: 20px; 
+    left: auto;
+    
+    width: 85px; /* Un poco más grandecito */
+    height: auto;
+    opacity: 0; 
+    z-index: -1; /* Fijo detrás de la caja del botón */
+    pointer-events: none; 
+    
+    transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28); 
+    transform: scale(0.6) rotate(45deg); 
+    transform-origin: center center;
+}
+
+.btn-main:hover .mascota-flotante {
+    /* LO SACAMOS MUCHO MÁS PARA QUE SE LUZCA */
+    top: -55px;   /* Sube más */
+    right: -40px; /* Se va más a la derecha */
+    opacity: 1; 
+    transform: scale(1.15) rotate(-10deg); 
+}
+
+/* --- DEFINICIÓN DE LA ANIMACIÓN DE PULSO --- */
+@keyframes pulsarBoton {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); } /* Pulso un poquito más sutil */
+    100% { transform: scale(1); }
+}
+
+/* =========================================
+   4. SISTEMA DE VISTAS (Para votar.html) 
+   ========================================= */
+.view {
+    display: none;
+}
+
+.view.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 8px 16px;
+    background: var(--blanco);
+    border: 2px solid var(--marron-oscuro);
+    border-radius: 50px;
+    color: var(--marron-oscuro);
+    font-weight: 900;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-family: 'Titan One', cursive;
+}
+
+/* =========================================
+   5. TABLERO DE RESTAURANTES (Rediseño)
+   ========================================= */
+.badge-review {
+    display: inline-block;
+    background: var(--blanco);
+    color: var(--marron-oscuro);
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 14px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+/* Contenedor Principal */
+.hero-votacion {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 60px;
+    gap: 20px;
+    position: relative; 
+    z-index: 1;
+    /* Sin overflow:hidden para no cortar las sombras de la hamburguesa */
+}
+
+/* LA MANCHA ORGÁNICA (Estilo "Tacho de pintura" pero controlada) */
+/* LA MANCHA ABSTRACTA */
+.hero-votacion::before {
+    content: "";
+    position: absolute;
+    /* La subimos un montón para tapar el hueco de arriba */
+    top: -120px; 
+    /* La estiramos bien hacia el borde derecho */
+    right: -10vw; 
+    /* La achicamos un poco a lo ancho para que no sea tan gigante */
+    width: 45vw; 
+    min-width: 400px;
+    height: 130%;
+    background: var(--mostaza);
+    
+    /* MAGIA: Curvas orgánicas solo a la izquierda, totalmente recto a la derecha */
+    border-radius: 40% 0 0 50% / 50% 0 0 40%; 
+    z-index: -1;
+}
+/* TEXTO DE VOTACIÓN (Con su fuente gorda asegurada) */
+.hero-votacion-texto {
+    flex: 1;
+    max-width: 45%; /* Límite para que no se pise con el SVG */
+    min-width: 300px;
+}
+
+.hero-votacion-texto h2 {
+    font-family: 'Titan One', cursive;
+    font-size: clamp(40px, 6vw, 60px); 
+    color: var(--marron-oscuro);
+    line-height: 1.1;
+    margin-bottom: 15px;
+}
+
+.hero-votacion-texto p {
+    font-family: 'Fredoka', sans-serif !important; /* Letra divertida */
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--texto-secundario);
+    line-height: 1.4;
+}
+
+.hero-votacion-img {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+/* La mancha orgánica naranja por detrás de las hamburguesas */
+
+
+
+
+.hero-votacion-img img {
+    width: 100%;
+    max-width: 600px; 
+    filter: drop-shadow(0px 30px 25px rgba(0,0,0,0.25)); 
+    transform: translateY(-10px); 
+}
+
+.divisor-tablero {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.divisor-tablero span {
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--texto-secundario);
+    text-transform: uppercase;
+}
+
+/* EFECTO INTERCALADO (Staggered Grid) */
+.restaurantes-grid-staggered {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    padding-bottom: 50px; /* Espacio extra para las colitas de abajo */
+}
+
+/* Tarjeta estilo ticket con colita */
+.restaurante-card-moderna {
+    background: var(--mostaza); /* Vuelve al color sólido */
+    width: 240px;
+    border-radius: 24px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0px 15px 25px rgba(244, 169, 0, 0.3); /* Vuelve su sombra original */
+    transition: transform 0.2s ease;
+    cursor: pointer;
+    border: none;
+}
+
+/* Apagamos el fondo artificial que habíamos creado */
+.restaurante-card-moderna::before {
+    display: none !important; 
+}
+
+.restaurante-card-moderna:hover {
+    transform: translateY(-5px);
+}
+
+/* El truco del intercalado: Las tarjetas pares bajan 40px */
+.restaurante-card-moderna:nth-child(even) {
+    margin-top: 40px; 
+}
+
+/* La colita (flecha) abajo a la derecha */
+.restaurante-card-moderna .card-tail {
+    position: absolute;
+    bottom: -25px; /* La bajamos apenitas más para que respiren los iconos */
+    right: 20px;
+    height: 34px;
+    background: var(--mostaza);
+    border-radius: 0 0 15px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px; /* Le damos ancho para que entren los dos botones */
+    gap: 12px; /* Separación entre botones y línea */
+    box-shadow: 0px 10px 15px rgba(244, 169, 0, 0.2);
+}
+/* Los botones interactivos de la colita */
+.tail-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--marron-oscuro);
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 20px;
+    transition: transform 0.2s ease;
+}
+
+/* Efecto al pasar el mouse por los iconos */
+.tail-action:hover {
+    transform: scale(1.2) translateY(-2px);
+}
+
+/* Ajuste de tamaño para tu nuevo icono de personitas */
+.tail-action img {
+    height: 18px; 
+    width: auto;
+    /* Si guardaste el icono negro y querés que sea marrón como el texto, podés descomentar la línea de abajo: */
+    /* filter: sepia(100%) hue-rotate(330deg) saturate(300%) brightness(0.5); */
+}
+
+/* La linita sutil que separa las opciones */
+.tail-divider {
+    width: 2px;
+    height: 16px;
+    background-color: var(--marron-oscuro);
+    opacity: 0.2;
+    border-radius: 2px;
+}
+.card-logo-container {
+    width: 100%;
+    height: 140px;
+    background: rgba(255, 255, 255, 0.2); /* Fondito sutil para el logo */
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+.card-logo-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.restaurante-card-moderna h3 {
+    font-family: 'Titan One', cursive;
+    color: var(--marron-oscuro);
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.restaurante-card-moderna p {
+    color: var(--marron-oscuro);
+    font-weight: 900;
+    opacity: 0.8;
+}
+.sello-nuevo-mascota { 
+    position: absolute; 
+    top: -30px; 
+    left: -40px; 
+    z-index: -1; 
+}
+.mascota-nuevo-sello {
+    position: absolute;
+    top: -45px; 
+    left: -40px; 
+    width: 140px; 
+    height: auto;
+    /* ACÁ ESTÁ LA MAGIA: Un número positivo alto lo trae adelante de TODO */
+    z-index: 10; 
+    transform: rotate(-10deg); 
+    pointer-events: none; 
+    filter: drop-shadow(4px 4px 0px rgba(74, 26, 4, 0.15));
+}
+/* =========================================
+   6. SISTEMA DE VOTACIÓN: GORDITOS JORDAN 
+   ========================================= */
+.rating-category { margin-bottom: 25px; }
+.category-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px; }
+.category-header label { font-weight: 900; color: var(--marron-oscuro); font-size: 16px; text-transform: uppercase;}
+.val-display { color: var(--marron-oscuro); font-size: 24px; font-family: 'Titan One', cursive; line-height: 1;}
+
+.faces-container { 
+    display: flex; 
+    justify-content: space-between; 
+    gap: 2px;
+    background: rgba(255, 255, 255, 0.2); 
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.face-wrapper { 
+    width: 32px; 
+    height: 40px; 
+    position: relative; 
+    cursor: pointer; 
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.face-base {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url('fotos/gordito.png'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left center;
+    filter: grayscale(100%) opacity(0.3) brightness(0.8) sepia(1) hue-rotate(-50deg) saturate(3); 
+}
+
+.face-fill {
+    position: absolute;
+    top: 0; left: 0;
+    width: 0%; 
+    height: 100%;
+    background-image: url('fotos/gordito.png'); 
+    background-size: auto 100%; 
+    background-repeat: no-repeat;
+    background-position: left center;
+    filter: grayscale(0%) opacity(1);
+    transition: width 0.15s ease-in-out;
+}
+
+/* --- MAGIA PARA MEDIO PUNTO --- */
+.half-detect {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 5;
+}
+.left-half { left: 0; }
+.right-half { right: 0; }
+/* =========================================
+   SISTEMA DE VOTACIÓN: GORDITOS FRACCIONADOS
+   ========================================= */
+.rating-gordito-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px; /* ANTES 25px - Lo hicimos más compacto */
+}
+
+.rating-gordito-container .label-texto {
+    font-family: 'Fredoka', sans-serif !important;
+    font-weight: 700;
+    color: var(--marron-oscuro);
+    font-size: 21px; /* ANTES 18px - Letra más grande y legible */
+    flex: 1; 
+}
+
+/* El grupo de caritas (funcionan como estrellas) */
+.rating-gordito {
+    display: flex;
+    flex-direction: row-reverse; 
+    justify-content: flex-end;
+    align-items: center; /* ESTO ALINEA EL CUADRADO DEL 0 CON LOS GORDITOS */
+}
+
+.rating-gordito input {
+    display: none; 
+}
+
+/* Cada "label" es LA MITAD de una cara de Gordito */
+.rating-gordito label {
+    cursor: pointer;
+    width: 20px; /* Volvemos a 20px (mitad de 40px) */
+    height: 40px;
+    background-image: url('fotos/gordito.png'); 
+    background-size: 40px 40px; /* Caras de 40x40, re tocables */
+    filter: grayscale(100%) opacity(0.3); 
+    transition: all 0.1s ease;
+}
+
+/* La mitad izquierda del gordito */
+.rating-gordito label.half {
+    background-position: left center;
+}
+
+/* La mitad derecha del gordito */
+.rating-gordito label.full {
+    background-position: right center;
+}
+
+/* Magia CSS: Prende la mitad que tocás y todas las anteriores */
+.rating-gordito label:hover,
+.rating-gordito label:hover ~ label,
+.rating-gordito input:checked ~ label {
+    filter: grayscale(0%) opacity(1);
+}
+
+/* El número dinámico de la derecha */
+.valor-voto {
+    color: var(--marron-oscuro) !important; 
+    font-family: 'Titan One', cursive;
+    font-size: 18px; /* Achicamos apenitas el número */
+    width: 35px;
+    text-align: right;
+    margin-left: 10px;
+}
+
+/* =========================================
+   7. FORMULARIOS Y BOTONES (Votar) 
+   ========================================= */
+textarea#input-destacado { 
+    width: 100%; 
+    padding: 18px; 
+    border-radius: 16px; 
+    border: 3px solid var(--marron-oscuro); 
+    background: var(--bg-crema); 
+    color: var(--marron-oscuro); 
+    font-size: 16px; 
+    font-weight: 700;
+    resize: none;
+    height: 100px;
+}
+
+textarea#input-destacado::placeholder {
+    color: var(--texto-secundario);
+    opacity: 0.6;
+}
+
+textarea#input-destacado:focus { 
+    outline: none; 
+    background: var(--blanco);
+}
+
+.btn-submit { 
+    background: var(--marron-oscuro); 
+    color: var(--mostaza); 
+    border: none; 
+    padding: 20px; 
+    width: 100%; 
+    border-radius: 18px; 
+    font-size: 20px; 
+    font-family: 'Titan One', cursive;
+    cursor: pointer; 
+    margin-top: 15px; 
+    transition: transform 0.1s;
+}
+
+.btn-submit:active { transform: scale(0.96); }
+/* =========================================
+   VISTA 2: FORMULARIO DE VOTACIÓN 
+   ========================================= */
+
+/* Contenedor principal de la vista de votación */
+#formulario-votacion {
+    position: relative;
+    padding: 40px 20px;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra todo horizontalmente */
+    z-index: 1;
+}
+
+/* LA MARCA DE AGUA (Fondo repetido) */
+#formulario-votacion::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* Llama al mismo logo que armaste para la pestaña */
+    background-image: url('fotos/logo-rankeada.png'); 
+    background-repeat: repeat;
+    background-size: 120px; /* Tamaño de cada loquito en el patrón */
+    opacity: 0.05; /* Súper transparente para que sea solo textura */
+    z-index: -1; 
+    pointer-events: none; /* Para que no moleste al hacer clic */
+}
+
+/* Acomodamos el botón de volver y el título para que queden centrados sobre la tarjeta */
+#formulario-votacion .btn-back {
+    align-self: flex-start;
+    margin-bottom: 20px;
+    margin-left: max(0px, calc(50% - 250px)); /* Lo alinea con el borde izquierdo de la tarjeta */
+}
+
+#formulario-votacion .section-header {
+    text-align: center;
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 2;
+}
+
+#formulario-votacion .section-header h2 {
+    font-family: 'Titan One', cursive;
+    color: var(--marron-oscuro);
+    font-size: clamp(28px, 5vw, 36px);
+    margin-bottom: 10px;
+}
+
+/* LA TARJETA VERTICAL DE COMANDA */
+.comanda-card {
+    background-color: var(--blanco);
+    width: 100%;
+    max-width: 500px; /* Al ponerle un max-width, la obligamos a ser un rectángulo vertical */
+    border: 3px solid var(--marron-oscuro);
+    border-radius: 24px;
+    /* Sombra dura estilo cómic vintage */
+    box-shadow: 10px 10px 0px rgba(74, 26, 4, 0.15); 
+    padding: 35px 25px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Separación entre los elementos del formulario */
+#categorias-voting-container {
+    margin-bottom: 20px;
+}
+
+.comment-section {
+    margin-top: 25px;
+}
+
+/* =========================================
+   CORRECCIÓN DE BUGS Y NUEVOS ELEMENTOS
+   ========================================= */
+
+/* 1. Arreglo del Bug: Ocultar vistas inactivas */
+.hidden {
+    display: none !important;
+}
+
+/* 2. Marca de agua en TODA la página (incluye el Nav) */
+body::before {
+    content: "";
+    position: fixed; /* Lo clava en el fondo, no importa cuánto bajes */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('fotos/logo-rankeada.png'); 
+    background-repeat: repeat;
+    background-size: 120px; 
+    opacity: 0.05; 
+    z-index: -10; /* Bien al fondo de todo */
+    pointer-events: none; 
+}
+
+/* Apagamos la marca de agua vieja que estaba solo en el formulario */
+#formulario-votacion::before {
+    display: none !important;
+}
+
+/* 3. Estilos de la tarjeta del Promedio en vivo */
+.promedio-container {
+    background-color: var(--mostaza);
+    color: var(--marron-oscuro);
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-family: 'Titan One', cursive;
+    font-size: 22px;
+    margin-top: 20px;
+    border: 2px solid var(--marron-oscuro);
+    box-shadow: 4px 4px 0px rgba(74, 26, 4, 0.15);
+}
+
+/* Color arreglado para el número del promedio */
+.promedio-container span {
+    color: var(--marron-oscuro); /* Cambiado de blanco a marrón para que pegue */
+    font-weight: 900;
+    text-shadow: none; /* Le sacamos la sombra blanca que quedaba rara */
+}
+.promedio-container-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* =========================================
+   ESTILOS DE LAS BARRAS DE VOTACIÓN (SLIDERS 0 a 10)
+   ========================================= */
+.categoria-voto {
+    margin-bottom: 25px;
+}
+
+.categoria-voto label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Fredoka', sans-serif !important;
+    font-weight: 700;
+    color: var(--marron-oscuro);
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+/* El número dinámico de la derecha (0 a 10) */
+.valor-voto {
+    color: var(--marron-oscuro) !important; /* Pasamos de rojo a marrón */
+    font-family: 'Titan One', cursive;
+    font-size: 22px;
+    width: 45px;
+    text-align: right;
+    margin-left: 15px;
+}
+
+/* La pista (el fondo) del slider */
+.slider-personalizado {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px; /* A subtle line for the track */
+    background: rgba(74, 26, 4, 0.1); 
+    border-radius: 6px;
+    outline: none;
+}
+
+/* La bolita del slider que el usuario arrastra */
+.slider-personalizado::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 50px; /* Adjust size as needed */
+    height: 50px;
+    background-image: url('fotos/gordito.png'); /* Ruta a la foto de Gordito Jordan */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent; /* Remove old color */
+    border: none; /* Remove old border */
+    box-shadow: none; /* Remove old shadow */
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    margin-top: -22px; /* Vertically center image on track (ImageH-TrackH)/2 */
+}
+
+/* Hover state if desired */
+.slider-personalizado::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+}
+/* =========================================
+   BOTÓN DE CERO EXPLÍCITO
+   ========================================= */
+/* =========================================
+   BOTÓN DE CERO EXPLÍCITO (REDISEÑO SELLO)
+   ========================================= */
+.rating-gordito label.btn-cero {
+    background-image: none; 
+    filter: none !important; 
+    width: 24px;
+    height: 24px;
+    border-radius: 6px; 
+    background-color: transparent; 
+    border: 2px dashed rgba(74, 26, 4, 0.3); 
+    color: rgba(74, 26, 4, 0.3); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Titan One', cursive;
+    font-size: 14px;
+    line-height: 1; /* Asegura el centrado vertical perfecto del número */
+    margin-right: 10px; /* ANTES 15px - Lo acercamos un poquito a los gorditos */
+    /* Borramos el padding-top que lo tiraba para abajo */
+    transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28); 
+}
+
+/* Hover: te avisa que es clickeable */
+.rating-gordito label.btn-cero:hover {
+    border-color: var(--marron-oscuro);
+    color: var(--marron-oscuro);
+    transform: scale(1.1);
+}
+
+/* Seleccionado: MODO CASTIGO */
+.rating-gordito input[value="0.0"]:checked + label.btn-cero {
+    background-color: #FA4D56; 
+    color: var(--blanco);
+    border: 2px solid #FA4D56; 
+    transform: scale(1.15) rotate(-12deg); 
+}
+/* =========================================
+   PANTALLA DE LOGIN VIP
+   ========================================= */
+.login-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh; /* Centra todo en el medio de la pantalla */
+    text-align: center;
+    z-index: 100;
+}
+
+.login-section h2 {
+    font-family: 'Titan One', cursive;
+    font-size: 45px;
+    color: var(--marron-oscuro);
+    line-height: 1.1;
+    margin-bottom: 10px;
+}
+
+.login-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* El diseño del cajón del PIN */
+.login-box input {
+    font-family: 'Nunito', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    padding: 15px;
+    text-align: center;
+    border: 3px solid var(--marron-oscuro);
+    border-radius: 15px;
+    width: 160px;
+    letter-spacing: 12px; /* Separa los asteriscos para que quede cheto */
+    outline: none;
+    background-color: var(--blanco);
+    color: var(--marron-oscuro);
+    box-shadow: 4px 4px 0px var(--marron-oscuro);
+    transition: all 0.2s ease;
+}
+
+.login-box input:focus {
+    transform: scale(1.05);
+    border-color: var(--mostaza);
+}
+/* =========================================
+   SALUDO DE USUARIO EN EL MENÚ
+   ========================================= */
+.user-greeting {
+    font-family: 'Titan One', cursive;
+    color: var(--marron-oscuro);
+    font-size: 16px;
+    margin-left: 15px;
+    background-color: var(--blanco);
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 2px solid var(--marron-oscuro);
+    box-shadow: 2px 2px 0px var(--marron-oscuro);
+    letter-spacing: 0.5px;
+    white-space: nowrap; /* Evita que el nombre se parta en dos renglones */
+}
+/* =========================================
+   MODAL DE VOTOS DE LA BANDA (EXPANDIBLE)
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(74, 26, 4, 0.85); /* Fondo oscuro */
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: var(--bg-crema);
+    width: 100%;
+    max-width: 500px;
+    max-height: 85vh;
+    border-radius: 24px;
+    border: 4px solid var(--marron-oscuro);
+    padding: 30px 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 8px 8px 0px var(--mostaza);
+}
+
+.cerrar-modal {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background: #FA4D56;
+    color: white;
+    border: 3px solid var(--marron-oscuro);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    font-family: 'Titan One', cursive;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--marron-oscuro);
+    z-index: 10;
+    transition: transform 0.1s;
+}
+.cerrar-modal:active { transform: scale(0.9); }
+
+.modal-content h2 {
+    font-family: 'Titan One', cursive;
+    color: var(--marron-oscuro);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+.lista-votos-banda {
+    overflow-y: auto; /* Para poder scrollear si hay muchos votos */
+    padding-right: 5px;
+}
+
+/* Tarjeta de cada usuario */
+.voto-card {
+    background: white;
+    border: 3px solid var(--marron-oscuro);
+    border-radius: 16px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 3px 3px 0px var(--marron-oscuro);
+    transition: all 0.2s ease;
+}
+
+.voto-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px var(--mostaza);
+}
+
+.voto-resumen {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: var(--mostaza);
+    font-family: 'Titan One', cursive;
+    font-size: 18px;
+    color: var(--marron-oscuro);
+}
+
+.voto-detalles {
+    display: none; /* Oculto por defecto, magia del acordeón */
+    padding: 15px 20px;
+    background: white;
+}
+
+/* LA MAGIA: Al hacer clic, se le pone la clase "expandido" y muestra los detalles */
+.voto-card.expandido .voto-detalles {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.voto-comentario {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    color: var(--texto-secundario);
+    font-style: italic;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--mostaza);
+    padding-left: 10px;
+}
+
+.voto-grilla {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detalle-fila {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 500;
+    color: var(--marron-oscuro);
+    border-bottom: 2px dotted rgba(74, 26, 4, 0.15);
+    padding-bottom: 4px;
+}
+
+.detalle-fila strong {
+    font-family: 'Titan One', cursive;
+    font-size: 18px;
+}
+
+.sin-votos {
+    text-align: center;
+    font-weight: 700;
+    color: var(--texto-secundario);
+    margin-top: 20px;
+}
+/* =========================================
+   CARTEL DE AVISO PERSONALIZADO
+   ========================================= */
+.aviso-rankeada {
+    position: fixed;
+    top: -100px; /* Empieza fuera de pantalla */
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--mostaza);
+    color: var(--marron-oscuro);
+    padding: 15px 30px;
+    border-radius: 15px;
+    border: 4px solid var(--marron-oscuro);
+    box-shadow: 6px 6px 0px var(--marron-oscuro);
+    font-family: 'Titan One', cursive;
+    font-size: 18px;
+    z-index: 5000;
+    transition: top 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.aviso-rankeada.visible {
+    top: 30px; /* Baja a su posición */
+}
+/* =========================================
+   PÁGINA DE RANKING (PODIO)
+   ========================================= */
+.ranking-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.ranking-header h1 { font-family: 'Titan One'; font-size: 40px; color: var(--marron-oscuro); }
+
+/* =========================================
+   MENÚ DESPLEGABLE RETRO (CUSTOM)
+   ========================================= */
+.retro-dropdown-container {
+    position: relative;
+    width: 250px;
+    margin: 0 auto;
+    z-index: 100;
+}
+
+.retro-dropdown-btn {
+    background: var(--mostaza);
+    border: 3px solid var(--marron-oscuro);
+    border-radius: 15px;
+    padding: 12px 20px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 900; /* Letra bien gordita */
+    font-size: 18px; /* Un poco más grande */
+    color: var(--marron-oscuro);
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--marron-oscuro);
+    
+    /* MAGIA PARA CENTRAR */
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    gap: 15px; /* Espacio entre el texto y la flechita */
+    transition: transform 0.1s;
+}
+
+.retro-dropdown-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--marron-oscuro); }
+
+.retro-dropdown-list {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 3px solid var(--marron-oscuro);
+    border-radius: 15px;
+    box-shadow: 6px 6px 0 var(--marron-oscuro);
+    overflow: hidden;
+    display: none; 
+    flex-direction: column;
+}
+
+.retro-dropdown-list.show {
+    display: flex;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.retro-option {
+    padding: 12px 20px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--marron-oscuro);
+    cursor: pointer;
+    border-bottom: 2px solid rgba(74, 26, 4, 0.1);
+    transition: background 0.2s, transform 0.2s;
+    
+    /* MAGIA PARA CENTRAR LAS OPCIONES */
+    text-align: center; 
+}
+
+.retro-option:last-child { border-bottom: none; }
+
+.retro-option:hover { 
+    background: var(--mostaza); 
+    /* En vez de moverlo a la derecha, le hacemos un zoom centrado */
+    transform: scale(1.05); 
+}
+
+/* =========================================
+   EL PODIO MEJORADO (Estilo Cartoon/Arcade)
+   ========================================= */
+.podium-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 0px; 
+    margin-bottom: 50px;
+    padding-top: 50px;
+    max-width: 700px; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.podium-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 33%; 
+    position: relative;
+}
+
+.podium-pj {
+    width: 100%;
+    max-width: 140px; 
+    margin-bottom: -15px; 
+    z-index: 5;
+    filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.3)); 
+}
+
+/* El bloque del podio */
+.pedestal {
+    width: 100%;
+    border: 4px solid var(--marron-oscuro);
+    border-bottom: 8px solid var(--marron-oscuro); 
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 25px;
+    position: relative;
+    box-shadow: inset -5px -5px 0px rgba(0,0,0,0.15);
+}
+
+/* Textos adentro del bloque (CHAU TEXTO EMPASTADO) */
+.pedestal h3 { 
+    font-family: 'Fredoka', sans-serif; /* Fuente súper legible */
+    font-weight: 900;
+    text-transform: uppercase; /* Fuerza todo a MAYÚSCULAS */
+    font-size: 22px; 
+    text-align: center; 
+    padding: 0 10px;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 5px;
+    word-break: break-word;
+    letter-spacing: 1px;
+    
+    /* Sombra un poquito más fina para que las letras respiren */
+    text-shadow: 
+        -1.5px -1.5px 0 var(--marron-oscuro),
+         1.5px -1.5px 0 var(--marron-oscuro),
+        -1.5px  1.5px 0 var(--marron-oscuro),
+         1.5px  1.5px 0 var(--marron-oscuro),
+         3px  3px 0 var(--marron-oscuro); 
+}
+
+/* Puntaje (CHAU TEXTO BORROSO) */
+.pedestal .nota { 
+    font-family: 'Titan One', cursive; 
+    font-size: 34px; 
+    color: white;
+    /* El truco: múltiples sombras sólidas en vez de stroke */
+    text-shadow: 
+        -2px -2px 0 var(--marron-oscuro),
+         2px -2px 0 var(--marron-oscuro),
+        -2px  2px 0 var(--marron-oscuro),
+         2px  2px 0 var(--marron-oscuro),
+         5px  5px 0 var(--marron-oscuro); /* La sombra base */
+}
+
+/* Alturas y Colores */
+.top-1 { z-index: 3; } 
+.top-1 .pedestal { height: 210px; background: #FFC107; border-color: var(--marron-oscuro); } 
+.top-1 .podium-pj { max-width: 180px; margin-bottom: -20px; } 
+
+.top-2 { z-index: 2; margin-right: -10px; } 
+.top-2 .pedestal { height: 160px; background: #E0E0E0; border-color: var(--marron-oscuro); } 
+
+.top-3 { z-index: 1; margin-left: -10px; }
+.top-3 .pedestal { height: 120px; background: #E67E22; border-color: var(--marron-oscuro); } 
+
+/* =========================================
+   LISTA DE ABAJO (ACÁ VOLVEMOS A ARMAR LA CAJA)
+   ========================================= */
+.ranking-list {
+    max-width: 600px;
+    margin: 0 auto;
+    padding-bottom: 50px;
+}
+
+.ranking-list-item {
+    background: white;
+    margin-bottom: 12px;
+    border-radius: 18px;
+    border: 3px solid var(--marron-oscuro);
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    justify-content: space-between;
+    box-shadow: 4px 4px 0 var(--marron-oscuro);
+    transition: transform 0.2s;
+}
+
+.ranking-list-item:hover { transform: translateX(5px); }
+
+.rank-number { 
+    font-family: 'Titan One', cursive; 
+    font-size: 24px; 
+    width: 45px; 
+    color: var(--texto-secundario); 
+    opacity: 0.5; 
+}
+
+.rank-name { 
+    flex-grow: 1; 
+    font-family: 'Fredoka', sans-serif; 
+    font-weight: 900; 
+    font-size: 20px; 
+    color: var(--marron-oscuro); 
+}
+
+.rank-score { 
+    font-family: 'Titan One', cursive; 
+    color: var(--mostaza); 
+    font-size: 24px; 
+    /* El truco de sombra limpia también acá */
+    text-shadow: 
+        -1.5px -1.5px 0 var(--marron-oscuro),
+         1.5px -1.5px 0 var(--marron-oscuro),
+        -1.5px  1.5px 0 var(--marron-oscuro),
+         1.5px  1.5px 0 var(--marron-oscuro),
+         3px 3px 0 var(--marron-oscuro); 
+}
+/* =========================================
+   AJUSTES PARA CELULARES (iPhone / Android)
+   ========================================= */
+@media (max-width: 768px) {
+    /* 1. NAV ANCLADO (ARREGLADO PARA IPHONE) */
+    .top-nav {
+        position: fixed; /* Mucho más estable que sticky en iOS */
+        top: 0; left: 0; right: 0;
+        z-index: 9999;
+        background-color: var(--bg-crema); /* Color base sólido */
+        padding: 15px 20px; 
+        padding-top: calc(15px + env(safe-area-inset-top)); /* Esquiva la cámara */
+        border-bottom: 3px solid var(--marron-oscuro);
+        display: flex;
+        align-items: center;
+    }
+
+    /* Textura del nav aplicada de forma segura para que no se rompa */
+    .top-nav::after {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image: url('fotos/logo-rankeada.png');
+        background-repeat: repeat;
+        background-size: 120px;
+        opacity: 0.05;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .top-nav .logo-container,
+    .top-nav .hamburger-container {
+        position: relative;
+        z-index: 1; /* Asegura que queden por encima de la textura */
+    }
+
+    /* 2. ARREGLO DEL HUECO GIGANTE */
+   main.page-container {
+    padding-top: 0;
+}
+
+.hero-votacion {
+    padding-top: calc(110px + env(safe-area-inset-top));
+}
+
+    .hero-wrapper {
+        margin-top: 0px !important; /* Le matamos el margen gigante de la PC */
+        min-height: auto;
+        margin-bottom: 40px; 
+    }
+
+    /* 3. SALUDO DE USUARIO AJUSTADO */
+    #user-greeting {
+        display: inline-block;
+        font-size: 13px;
+        padding: 5px 10px;
+        margin-left: 8px;
+    }
+
+    /* 4. PANTALLA VOTAR (TODO CENTRADO) */
+    .hero-votacion {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0;
+    }
+    
+    .hero-votacion-texto {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    /* Forzamos el centrado de los títulos que estaban a la izquierda */
+    .hero-votacion-texto h2, 
+    .hero-votacion-texto p {
+        text-align: center;
+    }
+
+    .hero-votacion-img {
+        display: none !important; /* Escondemos la foto en celular */
+    }
+
+    /* Mancha mostaza de fondo adaptada */
+    .hero-votacion::before {
+        top: -40px;
+        left: -20px;
+        right: -20px;
+        width: auto;
+        height: 120%;
+        border-radius: 0 0 40% 40%;
+    }
+    
+    /* 5. GORDITOS JORDAN */
+    .rating-gordito-container {
+        flex-wrap: wrap;
+        background: rgba(244, 169, 0, 0.1);
+        padding: 10px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+    }
+    
+    .rating-gordito-container .label-texto {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+
+    /* 6. CARTEL DE AVISO (Aparece abajo del nav) */
+    .aviso-rankeada.visible {
+        top: calc(85px + env(safe-area-inset-top)); 
+    }
+ /* 7. AJUSTE DE TAMAÑO "LA GRAN RANKEADA" PARA QUE NO SE SALGA DE LA PANTALLA */
+    .texto-muro span:nth-child(1) {
+        font-size: 16vw !important; 
+    }
+    .texto-muro span:nth-child(2) {
+        font-size: 13.5vw !important; 
+    }
+    /* 8. AJUSTE DE LA "X" DE LOS MODALES EN CELULARES */
+    .cerrar-modal {
+        top: -10px;
+        right: -5px; /* La metemos un poquito para adentro de la tarjeta */
+        transform: scale(0.9); /* La achicamos un 10% para que quede más prolija */
+    }
+} /* <--- ESTA LLAVE CIERRA LA CONFIGURACIÓN DE CELULARES, NO LA BORRES */
+
+/* =========================================
+   BOTONES DE ADMINISTRADOR (LAPICITO Y TACHO)
+   ========================================= */
+.admin-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.btn-edit-local, .btn-borrar-local {
+    background: white;
+    border: 2px solid var(--marron-oscuro);
+    border-radius: 8px;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--marron-oscuro);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-edit-local:active, .btn-borrar-local:active { 
+    transform: translate(2px, 2px); 
+    box-shadow: 0px 0px 0 var(--marron-oscuro); 
+}
+/* Ocultar nav cuando hay modal abierto en mobile */
+@media (max-width: 768px) {
+    body.modal-abierto .top-nav {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-100%);
+        transition: all 0.2s ease;
+    }
+}
+/* =========================================
+   FIXES: FONDO CREMA + HERO MOBILE + TARJETAS
+   ========================================= */
+
+/* FIX 1: Fondo crema en toda la página */
+html {
+    background-color: var(--bg-crema);
+}
+
+/* FIX 2: Recuadro naranja que llega bien arriba en mobile */
+@media (max-width: 768px) {
+    .hero-votacion {
+        padding-top: 30px;
+        padding-bottom: 40px;
+        overflow: visible;
+    }
+    
+    .hero-votacion::before {
+        top: -150px;
+        right: -20px;
+        left: -20px;
+        bottom: -20px;
+        width: auto;
+        min-width: unset;
+        height: auto;
+        border-radius: 0 0 50% 50% / 0 0 40px 40px;
+    }
+}
+
+/* FIX 3: Tarjetas que no se choquen en mobile */
+@media (max-width: 768px) {
+    .restaurante-card-moderna:nth-child(even) {
+        margin-top: 0;
+    }
+    
+    .restaurantes-grid-staggered {
+        flex-direction: column;
+        align-items: center;
+        gap: 50px;
+    }
+    
+    .restaurante-card-moderna {
+        width: 85%;
+        max-width: 300px;
+    }
+}
+.btn-back {
+    position: relative;
+    z-index: 10;
+}

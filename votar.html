@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Votar - La Gran Rankeada</title>
+    <link rel="icon" type="image/png" href="fotos/logo-rankeada.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="fotos/logo-rankeada.png">
+    <link rel="stylesheet" href="style.css?v=3">
+</head>
+<body>
+    <nav class="top-nav">
+        
+        <a href="index.html" class="logo-container" style="display: flex; align-items: center; text-decoration: none;">
+            <img src="fotos/logo-rankeada.png" alt="Logo La Gran Rankeada">
+            <span id="user-greeting" class="user-greeting" style="display: none;"></span>
+        </a>
+        
+        <div class="hamburger-container">
+            <div class="hamburger-btn" id="hamburger-btn" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="index.html" class="menu-item">INICIO</a>
+                <a href="votar.html" class="menu-item">VOTAR</a>
+                <a href="ranking.html" class="menu-item">RANKING</a>
+                <a href="javascript:void(0)" class="menu-item" id="btn-admin" style="display: none; color: #FA4D56;" onclick="abrirPanelAdmin()"> AGREGAR HAMBURGUESERÍA</a>
+            </div>
+        </div>
+
+    </nav>
+
+    <main class="page-container">
+
+        <section id="restaurantes-tablero" class="view active">
+            
+            <div class="hero-votacion">
+                <div class="fondo-blob">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#FA4D56" d="M13.4,-21.1C26.1,-9.1,51.3,-17,65,-12.3C78.6,-7.6,80.6,9.6,73.8,21.9C66.9,34.2,51.2,41.4,37.4,42.1C23.6,42.9,11.8,37,-1.8,39.4C-15.4,41.9,-30.7,52.6,-33.2,48.2C-35.6,43.9,-25.2,24.3,-30.3,9.6C-35.5,-5.1,-56.1,-15,-60.3,-25C-64.5,-34.9,-52.2,-44.9,-39.4,-56.8C-26.6,-68.8,-13.3,-82.7,-6.5,-73.8C0.3,-64.8,0.6,-33,13.4,-21.1Z" transform="translate(100 100)" />
+                    </svg>
+                </div>
+
+                <div class="hero-votacion-texto">
+                    <h2>¡Hora de<br>dar tu veredicto!</h2>
+                    <p>Elegí la hamburguesería, revisá la calidad y dejá asentado tu puntaje con los Gorditos Jordan.</p>
+                </div>
+                
+                <div class="hero-votacion-img">
+                    <img src="fotos/burger-duo.png" alt="Hamburguesas Dúo">
+                </div>
+            </div>
+
+            <div class="divisor-tablero">
+                <span>— LOCALES —</span>
+            </div>
+
+            <div class="restaurantes-grid-staggered" id="restaurantes-container">
+                </div>
+        </section>
+
+        <section id="formulario-votacion" class="view hidden">
+            <button class="btn-back" onclick="volverAlTablero()">Volver</button>
+            
+            <header class="section-header">
+                <h2>Veredicto para: <span id="hamburgueseria-votar">Kiddo</span></h2>
+            </header>
+
+            <div class="card comanda-card">
+                
+                <div id="categorias-voting-container"></div>
+
+                <div class="rating-category comment-section">
+                    <div class="category-header"><label>Destacado (Pequeño descargo)</label></div>
+                    <textarea id="input-destacado" placeholder="Ej: La salsa es una locura, pero se me desarmó..." maxlength="120"></textarea>
+                </div>
+
+                <div class="promedio-container-wrapper" style="margin-bottom: 25px; margin-top: 20px;">
+                    <div class="promedio-container">
+                        PUNTAJE GLOBAL: <span id="puntaje-promedio">0.0</span> / 5
+                    </div>
+                </div>
+
+                <button class="btn-submit" onclick="guardarVoto()">GUARDAR RANKEADA</button>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="modal-admin" class="modal-overlay">
+        <div class="modal-content" style="max-width: 400px;">
+            <button class="cerrar-modal" onclick="cerrarPanelAdmin()">X</button>
+            <h2 id="admin-modal-titulo">NUEVO LOCAL</h2>
+            
+            <input type="hidden" id="admin-id-local">
+
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <input type="text" id="admin-nombre-local" placeholder="Nombre de la hamburguesería" style="padding: 10px; border: 2px solid var(--marron-oscuro); border-radius: 10px; font-family: 'Nunito'; font-weight: bold; font-size: 16px;">
+                
+                <label id="label-foto-admin" style="font-family: 'Titan One'; color: var(--marron-oscuro);">Foto del logo:</label>
+                <input type="file" id="admin-foto-local" accept="image/*" style="font-family: 'Nunito';">
+                <p id="msg-foto-opcional" style="font-size: 12px; color: #666; display: none; margin-top: -10px;">(Dejá vacío para mantener el logo actual)</p>
+                
+                <hr style="border-top: 2px dashed rgba(74, 26, 4, 0.2); margin: 5px 0;">
+                <label style="font-family: 'Titan One'; color: var(--mostaza); -webkit-text-stroke: 0.5px var(--marron-oscuro);">Foto de la Banda (Opcional):</label>
+                <input type="file" id="admin-foto-banda" accept="image/*" style="font-family: 'Nunito';">
+                <p id="msg-foto-banda-opcional" style="font-size: 12px; color: #666; display: none; margin-top: -10px;">(Dejá vacío para mantener la foto grupal actual)</p>
+                
+                <div id="container-borrar-foto-banda" style="display: none; align-items: center; gap: 8px; margin-top: -5px;">
+                    <input type="checkbox" id="admin-borrar-foto-banda" style="width: auto; cursor: pointer; transform: scale(1.2);">
+                    <label for="admin-borrar-foto-banda" style="font-family: 'Fredoka', sans-serif; font-size: 14px; color: #FA4D56; font-weight: bold; cursor: pointer;">🗑️ Borrar foto grupal actual</label>
+                </div>
+
+                <button id="btn-guardar-local" class="btn-main btn-votar" onclick="guardarLocalBD()" style="margin-top: 10px;">
+                    <span>CARGAR A LA NUBE</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

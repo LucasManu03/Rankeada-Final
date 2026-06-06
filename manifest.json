@@ -1,0 +1,21 @@
+{
+  "name": "La Gran Rankeada",
+  "short_name": "Rankeada",
+  "description": "El ranking definitivo de hamburguesas de la banda.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#FDF3E3",
+  "theme_color": "#4A1A04",
+  "icons": [
+    {
+      "src": "fotos/logo-rankeada.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "fotos/logo-rankeada.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
