@@ -209,14 +209,10 @@ body {
 
 /* Tamaño específico para la primera línea: "LA GRAN" */
 .texto-muro span:nth-child(1) {
-    font-size: clamp(80px, 22vw, 300px); 
-    letter-spacing: -2px;
+    font-size: clamp(60px, 16vw, 220px); 
 }
-
-/* Tu ajuste: Tamaño específico y más reducido para "RANKEADA" */
 .texto-muro span:nth-child(2) {
-    font-size: clamp(70px, 22vw, 280px); 
-    letter-spacing: 0px; 
+    font-size: clamp(55px, 16vw, 200px); 
 }
 
 /* --- CAPA 1: Texto Sólido al FONDO --- */
@@ -1711,6 +1707,6 @@ html {
 }
 @media (max-width: 768px) {
     body.pagina-inicio main.page-container {
-        padding-top: calc(95px + env(safe-area-inset-top));
+        padding-top: calc(10px + env(safe-area-inset-top));
     }
 }
