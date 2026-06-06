@@ -1711,6 +1711,6 @@ html {
 }
 @media (max-width: 768px) {
     body.pagina-inicio main.page-container {
-        padding-top: calc(95px + env(safe-area-inset-top));
+        padding-top: calc(20px + env(safe-area-inset-top));
     }
 }
