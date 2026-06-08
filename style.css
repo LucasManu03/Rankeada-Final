@@ -1716,3 +1716,11 @@ html {
         padding-top: calc(30px + env(safe-area-inset-top));
     }
 }
+@media (max-width: 768px) {
+    #formulario-votacion {
+        padding-top: calc(80px + env(safe-area-inset-top));
+    }
+}
+#formulario-votacion {
+    padding-top: 90px;
+}
